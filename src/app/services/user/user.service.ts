@@ -3,8 +3,9 @@ import { HttpClient, HttpResponse, HttpHeaders, HttpErrorResponse } from '@angul
 import {User} from './user.model';
 import {Helper} from '../helper';
 import {Router} from '@angular/router';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import { retry, catchError, map, mergeMap } from 'rxjs/operators';
+import { AuthenticationService } from './authentication.service';
 
 
 @Injectable()//https://stackoverflow.com/questions/53571546/angular-7-shared-service-is-not-shared
@@ -19,68 +20,17 @@ export class UserService implements OnDestroy {
   // Announced
   userInfo$ = this.userInfo.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private auth: AuthenticationService) { }
 
   /**
    * Find a user
-   * @param user
+   * @param id
    * @returns {Observable<User>}
    */
-  findUser(user: User): Observable<any> {
-    return this.http.get<any>(this.userApiUrl).pipe(
-      map(
-        (response: HttpResponse<any>) => {
-          let result = this.searchUser(response, user);
-          return result;
-        }),
-      mergeMap((result) => {
-        if(result.authenticated == true){
-          return this.setToken(result.userInfo);
-        }
-        return null as any;
-      }),
+  get(id?: number): Observable<any> {
+    return this.http.get<any>(this.userApiUrl + `/${id}`).pipe(
       catchError(Helper.handleError)
     );
-  }
-
-  /**
-   * Authenticate user
-   * @returns {Observable<User>}
-   */
-  authenticate(): Observable<any> {
-    return this.http.get<any>(this.userApiUrl).pipe(
-      map(
-        (response: HttpResponse<any>) => {
-            return this.searchForToken(Helper.extractData(response));
-          })
-      );
-  }
-
-  /**
-   * Sign out (clears session storage)
-   */
-  signOut(): void {
-    sessionStorage.clear();
-    this.router.navigate(['']);
-  }
-
-
-  /**
-   * Search for user token
-   * @param data
-   * @returns {User}
-   */
-  private searchForToken(data: any): {} {
-    const storedToken = sessionStorage.getItem('hrm-token');
-    let user: User = new User();
-    if (!Helper.isEmpty(storedToken)) {
-      const foundUser: any[]  = data.filter((user: User) => user.token === storedToken);
-      user = (!Helper.isEmpty(foundUser[0])) ? foundUser[0] : new User();
-    }
-    if (Helper.isEmpty(user.token)) {
-      this.router.navigate(['']);
-    }
-    return user;
   }
 
   /**
@@ -90,11 +40,9 @@ export class UserService implements OnDestroy {
   private setToken(user: User): Observable<any> {
     const token: string  = Helper.generateUUID();
     sessionStorage.setItem('hrm-token', token);
-    user.token = token;
+    sessionStorage.setItem('userDetails', JSON.stringify(user));
 
-    //sessionStorage.setItem('user-info', JSON.stringify(user));
-
-    let url = `${this.userApiUrl}/${user.id}`;
+    let url = this.userApiUrl+ `/${user.oid}`;
     let options = {headers: this.headers};
 
     return this.http.put<any>(url, user, options).pipe(
@@ -105,21 +53,36 @@ export class UserService implements OnDestroy {
     );
   }
 
-  /**
-   * Search for a user in db
-   * @param res
-   * @param user
-   * @returns {{authenticated: boolean}}
-   */
-  private searchUser(res: any, user: User): any {
-    const userData = Helper.extractData(res);
-    const result = {authenticated: false, userInfo: null};
-    const foundPersons: any[] = userData.filter(res => res.username === user.username);
-    if (user.password === foundPersons[0].password) {
-      result.authenticated = true;
-      result.userInfo = foundPersons[0];
+  changePassword(formData): Observable<any> {
+    let accessToken = this.auth.getToken();
+    if(formData.newPass !== formData.confirmPass){
+      return throwError("Mật khẩu xác nhận và mật khẩu mới không khớp!");
     }
-    return result;
+    
+    let userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    let body = {
+      userId: userDetails.userId,
+      email: userDetails.email,
+      newPassword: formData.newPass,
+      confirmPassword: formData.confirmPass,
+      currentPassword: formData.currentPass
+    }
+
+    const PATH = this.userApiUrl + `/change-password`;
+    return this.http.post<any>(PATH, JSON.stringify(body))
+    .pipe(
+      retry(3),
+      //catchError(this.util.handleError)
+    );
+  }
+
+  resetPassword(data, token): Observable<any> {
+    localStorage.setItem("token", JSON.stringify(token));
+
+    const PATH = this.userApiUrl + `/reset-password`;
+
+    return this.http.post<any>(PATH, JSON.stringify(data))
+    .pipe();
   }
 
   /**

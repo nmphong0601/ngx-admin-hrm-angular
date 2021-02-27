@@ -1,0 +1,81 @@
+<nb-card [nbSpinner]="logging" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <nav class="navigation">
+      <a arial-label="Black" class="link back-link" href="#">
+        <nb-icon icon="arrow-back" pack="eva"></nb-icon>
+      </a>
+    </nav>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="auth-block">
+      <h1 id="title" class="title">Đăng nhập</h1>
+      <p class="sub-title">Nhập thông tin đăng nhập bên dưới.</p>
+      <form (ngSubmit)="onSubmit(loginForm.value)" #form="ngForm" aria-labelledby="title">
+
+        <div class="form-control-group">
+          <label class="label" for="input-username">Tên Đăng nhập:</label>
+          <input nbInput
+                fullWidth
+                [formControl]="loginForm.controls['Username']"
+                name="username"
+                id="input-username"
+                pattern="[a-zA-Z0-9]*"
+                placeholder="Tên Đăng nhập"
+                fieldSize="large"
+                autofocus
+                [status]="loginForm.controls['Username'].dirty ? (loginForm.controls['Username'].invalid  ? 'danger' : 'success') : ''"
+                [required]="getConfigValue('forms.validation.username.required')"
+                [attr.aria-invalid]="loginForm.controls['Username'].invalid && loginForm.controls['Username'].touched ? true : null">
+          <ng-container *ngIf="loginForm.controls['Username'].invalid && loginForm.controls['Username'].touched">
+            <p class="caption status-danger" *ngIf="loginForm.controls['Username'].errors?.required">
+              Tên Đăng nhập không được để trống!
+            </p>
+            <p class="caption status-danger" *ngIf="loginForm.controls['Username'].errors?.pattern">
+              Tên Đăng nhập bao gồm chữ số, không bao gồm kí tự đặc biệt
+            </p>
+          </ng-container>
+        </div>
+      
+        <div class="form-control-group">
+          <span class="label-with-link">
+            <label class="label" for="input-Password">Mật khẩu/ Mã OTP:</label>
+            <a class="forgot-Password caption-2" routerLink="../forgot-password">Quên mật khẩu?</a>
+          </span>
+          <input nbInput
+                fullWidth
+                [formControl]="loginForm.controls['Password']"
+                name="password"
+                type="password"
+                id="input-Password"
+                placeholder="Mật khẩu/ Mã OTP"
+                fieldSize="large"
+                [status]="loginForm.controls['Password'].dirty ? (loginForm.controls['Password'].invalid  ? 'danger' : 'success') : ''"
+                [required]="getConfigValue('forms.validation.password.required')"
+                [minlength]="getConfigValue('forms.validation.password.minLength')"
+                [maxlength]="getConfigValue('forms.validation.password.maxLength')"
+                [attr.aria-invalid]="loginForm.controls['Password'].invalid && loginForm.controls['Password'].touched ? true : null">
+          <ng-container *ngIf="loginForm.controls['Password'].invalid && loginForm.controls['Password'].touched ">
+            <p class="caption status-danger" *ngIf="loginForm.controls['Password'].errors?.required">
+              Mật khẩu/ Mã OTP không được để trống!
+            </p>
+            <p class="caption status-danger" *ngIf="loginForm.controls['Password'].errors?.minlength || password.errors?.maxlength">
+              Mật khẩu/ Mã OTP phải có độ dài
+              từ {{ getConfigValue('forms.validation.password.minLength') }}
+              đến {{ getConfigValue('forms.validation.password.maxLength') }}
+              ký tự
+            </p>
+          </ng-container>
+        </div>
+      
+        <button nbButton
+                fullWidth
+                status="primary"
+                size="large"
+                [disabled]="submitted || !loginForm.valid || captchaVerified===''"
+                [class.btn-pulse]="submitted">
+          Đăng nhập
+        </button>
+      </form>
+    </div>  
+  </nb-card-body>
+</nb-card>

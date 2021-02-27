@@ -5,34 +5,96 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
+    private authApiUrl = 'api/v1/users';
 
-    constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(new User());
-        this.currentUser = this.currentUserSubject.asObservable();
+    constructor(private http: HttpClient, private router: Router) {
+        
     }
 
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
-    }
-
-    login(username: string, password: string) {
-        return this.http.post<any>(`${environment.BASE_URL}/api/users/authenticate`, { username, password })
-            .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.currentUserSubject.next(user);
-                return user;
-            }));
-    }
+    login(credentials): Observable<any> {
+        console.log(credentials);
+        const loginData = {
+          username: credentials.Username,
+          password: credentials.Password,
+        };
+        const PATH = this.authApiUrl + `/authenticate`;
+        return this.http.post<any>(PATH, JSON.stringify(loginData))
+        .pipe(
+          //retry(3),
+          //catchError(this.util.handleError)
+        );
+      }
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(new User());
+        sessionStorage.clear();
+        localStorage.clear();
+        
+        this.router.navigate(['authentication'])
     }
+
+    forgotPassword(email): Observable<any>{
+        const PATH = this.authApiUrl + `/forgot`;
+        return this.http.post<any>(PATH, JSON.stringify({email: email}))
+        .pipe(
+          //retry(3),
+          //catchError(this.util.handleError)
+        );
+      }
+      verifyResetPassword(email, code): Observable<any> {
+        const PATH = this.authApiUrl + `/otp-verify`;
+  
+        return this.http.post<any>(PATH, JSON.stringify({email: email, code: code}))
+        .pipe();
+      }
+  
+      getToken(): string {
+        let token = JSON.parse(sessionStorage.getItem('token'));
+  
+        // if(token){
+        //   this.verifyToken(token).pipe(untilDestroyed(this)).subscribe(
+        //     (res: any) => {
+        //       return token;
+        //     },
+        //     (err: HttpErrorResponse) => {
+        //       if(err.status === 401 && localStorage.getItem('refreshToken')){
+        //         let refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
+        //         this.verifyToken(refreshToken)
+        //         .pipe(untilDestroyed(this)).subscribe(
+        //           (res: any) => {
+        //             localStorage.setItem("token", JSON.stringify(res.accessToken));
+        //             localStorage.setItem("refreshToken", JSON.stringify(res.refreshToken));
+    
+        //             token = JSON.parse(localStorage.getItem('token'));
+        //             return token;
+        //           }
+        //         )
+        //       }
+        //     }
+        //   );
+        // }
+  
+        return token;
+    }
+  
+      verifyToken(token):Observable<any> {
+        const PATH = this.authApiUrl + `/refresh-token`;
+        return this.http.post<any>(PATH, JSON.stringify({token: token}))
+        .pipe(
+          //retry(3),
+          //catchError(this.util.handleError)
+        );
+    }
+
+    clearLocalStorage() {
+        localStorage.clear();
+    }
+    clearSessionStorage() {
+        localStorage.clear();
+    }
+      
 }

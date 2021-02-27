@@ -1,0 +1,10 @@
+<nb-card [nbSpinner]="loadingPayrolls" nbSpinnerStatus="primary" nbSpinnerSize="large">
+    <nb-card-header class="d-flex justify-content-between">
+      Danh sách lương
+      <button nbButton status="primary" (click)="btnClickAdd()"><nb-icon icon="plus"></nb-icon>Thêm mới</button>
+    </nb-card-header>
+    <nb-card-body>
+      <ng2-smart-table [settings]="settings" [source]="source" (delete)="btnClickDelete($event)" (edit)="btnClickEdit($event)">
+      </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

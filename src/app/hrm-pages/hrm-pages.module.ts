@@ -13,16 +13,17 @@ import {
 import { ThemeModule } from '../@theme/theme.module';
 import { HrmPagesComponent } from './hrm-pages.component';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { HrmPagesRoutingModule } from './hrm-pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { DialogEmployeePromptComponent } from './employee/dialog-employee-prompt/dialog-employee-prompt.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PayrollComponent } from './payroll/payroll.component';
+import { DialogPayrollPromptComponent } from './payroll/dialog-payroll-prompt/dialog-payroll-prompt.component';
 
 @NgModule({
-  entryComponents: [DialogEmployeePromptComponent],
+  entryComponents: [DialogPayrollPromptComponent, DialogEmployeePromptComponent],
   imports: [
     NbIconModule,
     NbInputModule,
@@ -39,7 +40,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     Ng2SmartTableModule,
     NbDatepickerModule.forRoot(),
     DashboardModule,
-    ECommerceModule,
     MiscellaneousModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -47,6 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HrmPagesComponent,
     EmployeeComponent,
     DialogEmployeePromptComponent,
+    PayrollComponent,
+    DialogPayrollPromptComponent
   ],
 })
 export class HrmPagesModule {

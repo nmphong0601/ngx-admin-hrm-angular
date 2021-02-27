@@ -8,6 +8,7 @@ import { User } from '../../services/user/user.model';
 import { EmployeeService } from '../../services/employee/employee.service';
 
 import { NbIconLibraries } from '@nebular/theme';
+import { Employee } from '../../services/employee/employee.model';
 
 @Component({
   selector: 'ngx-employee',
@@ -38,10 +39,6 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       confirmDelete: true
     },
     columns: {
-      code: {
-        title: "Mã nhân viên",
-        type: "string"
-      },
       firstName: {
         title: "Họ và tên đệm",
         type: "string"
@@ -80,7 +77,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
                 this.iconsLibrary.registerFontPack('far', { packClass: 'far', iconClassPrefix: 'fa' });
                 this.iconsLibrary.registerFontPack('ion', { iconClassPrefix: 'ion' });
 
-                this.iconsLibrary.setDefaultPack('fa');
+                //this.iconsLibrary.setDefaultPack('fa');
   }
 
   loadData() {
@@ -103,7 +100,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   btnClickAdd() {
     debugger;
-    let newUser = new User();
+    let newUser = new Employee();
 
     this.dialogService.open(DialogEmployeePromptComponent, { 
       context: {

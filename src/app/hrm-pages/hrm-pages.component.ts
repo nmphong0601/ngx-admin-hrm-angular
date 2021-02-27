@@ -13,6 +13,6 @@ import { MENU_ITEMS } from './hrm-pages-menu';
   `,
 })
 export class HrmPagesComponent {
-
+  role: string;
   menu = MENU_ITEMS;
 }

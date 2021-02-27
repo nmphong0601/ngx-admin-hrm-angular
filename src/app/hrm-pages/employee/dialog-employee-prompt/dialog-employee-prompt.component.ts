@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { NbDialogRef, NbDateService, NbToastrService } from '@nebular/theme';
-import { User } from '../../../services/user/user.model';
+import { Employee } from '../../../services/employee/employee.model';
 
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { mergeMap, finalize, takeUntil } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
   employeeForm: FormGroup
 
   title: string;
-  userDetails: User;
+  userDetails: Employee;
 
   constructor(protected ref: NbDialogRef<DialogEmployeePromptComponent>,
               private staffService: EmployeeService,
@@ -86,7 +86,7 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
   }
 
   update(formData) {
-    formData.staffId = this.userDetails.staffId;
+    formData.staffId = this.userDetails.oid;
     this.staffService.update(formData).pipe(takeUntil(this.destroy$))
     .subscribe(
       (success: any) => {

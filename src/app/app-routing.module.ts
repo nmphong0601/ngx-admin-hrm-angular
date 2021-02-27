@@ -8,10 +8,12 @@ import {
   NbRequestPasswordComponent,
   NbResetPasswordComponent,
 } from '@nebular/auth';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'app',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./hrm-pages/hrm-pages.module')
       .then(m => m.HrmPagesModule),
   },
@@ -19,6 +21,11 @@ export const routes: Routes = [
     path: 'pages',
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
+  },
+  {
+    path: 'authentication',
+    loadChildren: () => import('./authentication/authentication.module')
+      .then(m => m.AuthenticationModule),
   },
   {
     path: 'auth',
@@ -50,8 +57,8 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: '', redirectTo: 'app', pathMatch: 'full' },
-  { path: '**', redirectTo: 'app' },
+  { path: '', redirectTo: 'authentication', pathMatch: 'full' },
+  { path: '**', redirectTo: 'auth' },
 ];
 
 const config: ExtraOptions = {

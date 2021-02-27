@@ -70,14 +70,14 @@ export class EmployeeService implements OnDestroy {
    * @param employee
    */
   update(employee: Employee): Observable<any> {
-    let url = `${this.employeeApiUrl}/${employee.id}`;
+    let url = `${this.employeeApiUrl}/${employee.oid}`;
     let options = {headers: this.headers};
     return this.http.put(url, employee, options).pipe(
       catchError(Helper.handleError)
     );
   }
   updateEmployee(employee: Employee) {
-    let url = `${this.employeeApiUrl}/${employee.id}`;
+    let url = `${this.employeeApiUrl}/${employee.oid}`;
     let options = {headers: this.headers};
     return this.http.put(url, employee, options).pipe(
       catchError(Helper.handleError)
@@ -89,14 +89,14 @@ export class EmployeeService implements OnDestroy {
    * @param employee
    */
   remove(employee: Employee): Observable<any> {
-    let url = `${this.employeeApiUrl}/${employee.id}`;
+    let url = `${this.employeeApiUrl}/${employee.oid}`;
     let options = {headers: this.headers};
     return this.http.delete(url, options).pipe(
       catchError(Helper.handleError)
     );
   }
   removeEmployee(employee: Employee) {
-    let url = `${this.employeeApiUrl}/${employee.id}`;
+    let url = `${this.employeeApiUrl}/${employee.oid}`;
     let options = {headers: this.headers};
     return this.http.delete(url, options).pipe(
       catchError(Helper.handleError)

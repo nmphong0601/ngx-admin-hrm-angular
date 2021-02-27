@@ -1,0 +1,15 @@
+<nb-card class="text-center" [nbSpinner]="sendingOTP" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <div>
+      Chúng tôi đã gửi mã OTP đến địa chỉ email của bạn.
+    </div><br/>
+     Vui lòng kiểm tra email và nhập mã OTP
+  </nb-card-header>
+  <nb-card-body>
+    <input #content nbInput placeholder="Mã OTP">
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton status="danger" (click)="cancel()">Hủy</button>
+    <button nbButton status="success" (click)="submit(content.value)" [disabled]="!content.value">Xác nhận</button>
+  </nb-card-footer>
+</nb-card>

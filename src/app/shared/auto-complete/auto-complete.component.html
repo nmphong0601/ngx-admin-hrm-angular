@@ -1,0 +1,12 @@
+<div>
+    <input [disabled]="disabled===true" nbInput [value]="keywork" (input)="keywork = $event.target.value" (change)="keyworkChanged($event)" name="keywork"
+        [placeholder]="placeholder"
+        class="form-control">
+    <nb-card *ngIf="showResult" (click)="selectResult()" class="result">
+        <nb-card-body>
+            <div>{{valueshow}}</div><br/>
+            <nb-icon icon="archive"></nb-icon> {{keywork}}
+        </nb-card-body>
+    </nb-card>
+</div>
+

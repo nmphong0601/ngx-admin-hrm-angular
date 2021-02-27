@@ -1,0 +1,9 @@
+@import '../../@theme/styles/themes.scss';
+
+.result {
+    cursor: pointer;
+    font-weight: bold;
+    &:hover{
+        background-color: #edf1f7;
+    }
+}

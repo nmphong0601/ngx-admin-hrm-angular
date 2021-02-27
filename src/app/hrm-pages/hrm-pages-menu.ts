@@ -8,12 +8,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'ADMIN',
+    title: 'QUẢN TRỊ',
     group: true,
   },
   {
-    title: 'Employee',
+    title: 'Quản lý nhân viên',
     icon: 'person-outline',
     link: '/app/employee'
+  },
+  {
+    title: 'Quản lý lương',
+    icon: 'credit-card-outline',
+    link: '/app/payroll'
   },
 ];

@@ -1,0 +1,79 @@
+<nb-card [nbSpinner]="submitting" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <nav class="navigation">
+      <a arial-label="Black" class="link back-link" href="">
+        <!-- <nb-icon icon="arrow-back" pack="eva"></nb-icon> -->
+      </a>
+    </nav>
+  </nb-card-header>
+  <nb-card-body>
+    <div>
+      <div class="auth-block">
+        <h1 id="title" class="auth-block title">{{title}}</h1>
+      </div>
+      <form #form="ngForm" aria-labelledby="title" class="row">
+        <div class="col-md-6">
+          <div class="form-control-group ">
+            <label class="label">Lương:</label>
+            
+            <div class="row">
+              <div class="col-sm-12">
+                <input nbInput
+                fullWidth
+                name="salary"
+                [formControl]="payrollForm.controls['salary']"
+                [status]="payrollForm.controls['salary'].dirty ? (payrollForm.controls['salary'].invalid  ? 'danger' : 'success') : 'danger'"
+                id="input-salary"
+                placeholder="Lương cơ bản"
+                fieldSize="large"
+                autofocus />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-control-group ">
+            <label class="label">Thưởng:</label>
+            
+            <div class="row">
+              <div class="col-sm-12">
+                <input nbInput
+                fullWidth
+                name="salary"
+                [formControl]="payrollForm.controls['salary']"
+                [status]="payrollForm.controls['salary'].dirty ? (payrollForm.controls['salary'].invalid  ? 'danger' : 'success') : 'danger'"
+                id="input-salary"
+                placeholder="Thưởng"
+                fieldSize="large"
+                autofocus />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="auth-block">
+          <button nbButton
+                  fullWidth
+                  status="primary"
+                  size="large"
+                  *ngIf="title=='Thêm mới nhân viên'"
+                  [disabled]="!payrollForm.valid"
+                  [class.btn-pulse]="submitted" (click)="add(payrollForm.value)">
+            Thêm mới
+          </button>
+          <button nbButton
+                  fullWidth
+                  status="info"
+                  size="large"
+                  *ngIf="title=='Cập nhật nhân viên'"
+                  [disabled]="!payrollForm.valid"
+                  [class.btn-pulse]="submitted" (click)="update(payrollForm.value)">
+            Cập nhật
+          </button>
+        </div>
+      </form>
+    </div>  
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="auth-block" nbButton status="danger" (click)="cancel()">Hủy</button>
+  </nb-card-footer>
+</nb-card>

@@ -6,9 +6,12 @@ import {Router} from '@angular/router';
 import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import { retry, catchError, map, mergeMap } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
+import { root } from 'rxjs/internal/util/root';
 
 
-@Injectable()//https://stackoverflow.com/questions/53571546/angular-7-shared-service-is-not-shared
+@Injectable({
+  providedIn: 'root'
+})//https://stackoverflow.com/questions/53571546/angular-7-shared-service-is-not-shared
 export class UserService implements OnDestroy {
 
   private userApiUrl = 'api/users';

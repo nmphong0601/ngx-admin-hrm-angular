@@ -25,7 +25,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: 'hrm-dashboard',
+      redirectTo: 'employee',
       pathMatch: 'full',
     },
     {

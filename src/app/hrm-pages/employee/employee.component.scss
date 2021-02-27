@@ -1,0 +1,9 @@
+@import '../../@theme/styles/themes.scss';
+
+@include nb-install-component() {
+    nb-card-header {
+        button {
+            margin: 0rem 1rem;
+        };
+    }
+}

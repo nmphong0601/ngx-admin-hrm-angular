@@ -12,7 +12,7 @@ export class Helper {
    * @returns {boolean}
    */
   public static isEmpty(val:any) {
-    return (val === undefined || val == null  || val.length <= 0) ? true : false;
+    return (val === undefined || val == null || val.length <= 0) ? true : false;
   }
 
   /**
@@ -29,7 +29,7 @@ export class Helper {
     } else {
       errorMessage = httpError.message ? httpError.message : httpError.toString();
     }
-    console.log(errorMessage);
+    //console.log(errorMessage);
     return throwError(errorMessage);
   }
 

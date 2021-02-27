@@ -8,7 +8,9 @@ import {Helper} from '../helper';
 
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EmployeeService implements OnDestroy {
 
   /**
@@ -21,6 +23,12 @@ export class EmployeeService implements OnDestroy {
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient) { }
+
+  all(): Observable<any> {
+    const PATH = this.employeeApiUrl;
+
+    return this.http.get<any>(PATH).pipe();
+  }
 
   /**
    * Returns an Observable of type Employee retrieved via http.get
@@ -40,13 +48,20 @@ export class EmployeeService implements OnDestroy {
    * @param employee
    * @returns {Observable<Employee>}
    */
+  add(employee: Employee): Observable<any> {
+    let options = {headers: this.headers};
+    return this.http.post(this.employeeApiUrl, employee, options).pipe(
+      map((response:any) => Helper.extractData(response)),
+      catchError(Helper.handleError)
+    );
+  }
   addEmployee(employee: Employee) {
     let options = {headers: this.headers};
     this.http.post(this.employeeApiUrl, employee, options).pipe(
       map((response:any) => Helper.extractData(response)),
       catchError(Helper.handleError)
     ).subscribe(() =>{
-      this.getEmployees()
+      this.getEmployees();
     });
   }
 
@@ -54,6 +69,13 @@ export class EmployeeService implements OnDestroy {
    * Update an employee by calling http.put
    * @param employee
    */
+  update(employee: Employee): Observable<any> {
+    let url = `${this.employeeApiUrl}/${employee.id}`;
+    let options = {headers: this.headers};
+    return this.http.put(url, employee, options).pipe(
+      catchError(Helper.handleError)
+    );
+  }
   updateEmployee(employee: Employee) {
     let url = `${this.employeeApiUrl}/${employee.id}`;
     let options = {headers: this.headers};
@@ -66,6 +88,13 @@ export class EmployeeService implements OnDestroy {
    * Remove an employee by calling http.delete
    * @param employee
    */
+  remove(employee: Employee): Observable<any> {
+    let url = `${this.employeeApiUrl}/${employee.id}`;
+    let options = {headers: this.headers};
+    return this.http.delete(url, options).pipe(
+      catchError(Helper.handleError)
+    );
+  }
   removeEmployee(employee: Employee) {
     let url = `${this.employeeApiUrl}/${employee.id}`;
     let options = {headers: this.headers};

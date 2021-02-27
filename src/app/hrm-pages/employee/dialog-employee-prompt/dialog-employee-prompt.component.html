@@ -1,0 +1,185 @@
+<nb-card [nbSpinner]="submitting" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <nav class="navigation">
+      <a arial-label="Black" class="link back-link" href="">
+        <!-- <nb-icon icon="arrow-back" pack="eva"></nb-icon> -->
+      </a>
+    </nav>
+  </nb-card-header>
+  <nb-card-body>
+    <div>
+      <div class="auth-block">
+        <h1 id="title" class="auth-block title">{{title}}</h1>
+      </div>
+      <form #form="ngForm" aria-labelledby="title" class="row">
+        <div class="col-md-6">
+          <div class="form-control-group ">
+            <label class="label">Họ và tên:</label>
+            
+            <div class="row">
+              <div class="col-sm-7">
+                <input nbInput
+                fullWidth
+                name="firstname"
+                [formControl]="employeeForm.controls['firstName']"
+                [status]="employeeForm.controls['firstName'].dirty ? (employeeForm.controls['firstName'].invalid  ? 'danger' : 'success') : 'danger'"
+                id="input-firstname"
+                placeholder="Nhập họ và tên đệm"
+                fieldSize="large"
+                autofocus />
+              </div>
+              <div class="col-sm-5">
+                <input nbInput
+                fullWidth
+                name="lastname"
+                [formControl]="employeeForm.controls['lastName']"
+                [status]="employeeForm.controls['lastName'].dirty ? (employeeForm.controls['lastName'].invalid  ? 'danger' : 'success') : 'danger'"
+                id="input-lastname"
+                placeholder="Nhập tên"
+                fieldSize="large"
+                autofocus />
+              </div>
+            </div>
+            <ng-container >
+              <p class="caption status-danger" *ngIf="employeeForm.controls['firstName'].errors?.required || employeeForm.controls['lastName'].errors?.required">
+                Họ và tên không được để trống
+              </p>
+              <p class="caption status-danger" >
+                <!-- Tên Đăng nhập bao gồm chữ số, không bao gồm kí tự đặc biệt -->
+              </p>
+            </ng-container>
+          </div>
+  
+          <div class="form-control-group">
+            <label class="label">Ngày tháng năm sinh:</label>
+            <input nbInput
+              fullWidth
+              readonly
+              name="birthdate"
+              id="input-birthdate"
+              [nbDatepicker]="datepicker"
+              [formControl]="employeeForm.controls['birthDate']"
+              placeholder="Ngày tháng năm sinh"
+              fieldSize="large"
+              autofocus />
+            <nb-datepicker #datepicker format="yyyy-MM-dd" [max]="maxBirthDate"></nb-datepicker>
+          </div>
+          
+          <div class="form-control-group">
+            <label class="label">Giới tính:</label>
+            <nb-radio-group [formControl]="employeeForm.controls['gender']" name="gender">
+              <nb-radio value="Male">Nam</nb-radio>
+              <nb-radio value="Female">Nữ</nb-radio>
+            </nb-radio-group>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-control-group">
+            <label class="label">Số điện thoại:</label>
+            <input nbInput
+              fullWidth
+              name="phone"
+              id="input-phone"
+              [formControl]="employeeForm.controls['phone']"
+              pattern="^(\+84|0)?[0-9]{10}$"
+              placeholder="xxx xxx xxxx"
+              fieldSize="large"
+              autofocus
+            >
+            <ng-container >
+              <p class="caption status-danger">
+                <!-- Tên Đăng nhập không được để trống! -->
+              </p>
+              <p class="caption status-danger" *ngIf="employeeForm.controls['phone'].errors?.pattern">
+                Sai định dạng số điện thoại
+              </p>
+            </ng-container>
+          </div>
+
+          <div class="form-control-group">
+            <label class="label">Địa chỉ:</label>
+            <input nbInput
+              fullWidth
+              name="address"
+              id="input-address"
+              [formControl]="employeeForm.controls['address']"
+              placeholder="Nhập địa chỉ"
+              fieldSize="large"
+              autofocus
+            >
+            <ng-container >
+              <p class="caption status-danger">
+                <!-- Tên Đăng nhập không được để trống! -->
+              </p>
+              <p class="caption status-danger">
+              </p>
+            </ng-container>
+          </div>
+
+          <div class="form-control-group">
+            <label class="label">Email:</label>
+            <input nbInput
+              fullWidth
+              type="email"
+              name="email"
+              id="input-email"
+              [formControl]="employeeForm.controls['email']"
+              required="forms.validation.email.required"
+              pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+              [status]="employeeForm.controls['email'].dirty ? (employeeForm.controls['email'].invalid  ? 'danger' : 'success') : 'danger'"
+              placeholder="Nhập email"
+              fieldSize="large"
+              autofocus
+            >
+            <ng-container >
+              <p class="caption status-danger" *ngIf="employeeForm.controls['email'].errors?.required">
+                Email không được để trống
+              </p>
+              <p class="caption status-danger" *ngIf="employeeForm.controls['email'].errors?.pattern">
+                Sai định dạng email
+              </p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="auth-block">
+          <button nbButton
+                  fullWidth
+                  status="primary"
+                  size="large"
+                  *ngIf="title=='Thêm mới nhân viên'"
+                  [disabled]="!employeeForm.valid"
+                  [class.btn-pulse]="submitted" (click)="add(employeeForm.value)">
+            Thêm mới
+          </button>
+          <button nbButton
+                  fullWidth
+                  status="info"
+                  size="large"
+                  *ngIf="title=='Cập nhật nhân viên'"
+                  [disabled]="!employeeForm.valid"
+                  [class.btn-pulse]="submitted" (click)="update(employeeForm.value)">
+            Cập nhật
+          </button>
+        </div>
+      </form>
+    </div>  
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="auth-block" nbButton status="danger" (click)="cancel()">Hủy</button>
+  </nb-card-footer>
+</nb-card>
+<!-- <nb-card class="text-center" [nbSpinner]="sendingOTP" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <div>
+      Chúng tôi đã gửi mã OTP đến địa chỉ email của bạn.
+    </div><br/>
+     Vui lòng kiểm tra email và nhập mã OTP
+  </nb-card-header>
+  <nb-card-body>
+    <input #content nbInput placeholder="Mã OTP">
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton status="danger" (click)="cancel()">Hủy</button>
+    <button nbButton status="success" (click)="submit(content.value)" [disabled]="!content.value">Xác nhận</button>
+  </nb-card-footer>
+</nb-card> -->

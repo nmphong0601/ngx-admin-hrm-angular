@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { HrmPagesComponent } from './hrm-pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { EmployeeListComponent } from './employee/employee-list/employee-list.component';
+import { EmployeeComponent } from './employee/employee.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 
 const routes: Routes = [{
@@ -16,7 +16,7 @@ const routes: Routes = [{
     },
     {
       path: 'employee',
-      component: EmployeeListComponent,
+      component: EmployeeComponent,
     },
     {
       path: '',

@@ -18,10 +18,10 @@ export class AuthenticationService {
     login(credentials): Observable<any> {
         console.log(credentials);
         const loginData = {
-          username: credentials.Username,
-          password: credentials.Password,
+          user: credentials.Username,
+          pwd: credentials.Password,
         };
-        const PATH = this.authApiUrl + `/authenticate`;
+        const PATH = this.authApiUrl + `/login`;
         return this.http.post<any>(PATH, JSON.stringify(loginData))
         .pipe(
           //retry(3),

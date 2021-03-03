@@ -36,9 +36,9 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
   createForm() {
     debugger;
     this.employeeForm = this.fb.group({
-      firstName: [this.userDetails.firstName, Validators.required],
-      lastName: [this.userDetails.lastName, Validators.required],
-      birthDate: this.userDetails.birthDate !== "" && this.convertDate(this.userDetails.birthDate) || this.maxBirthDate,
+      firstName: [this.userDetails.first_name, Validators.required],
+      lastName: [this.userDetails.last_name, Validators.required],
+      birthDate: this.userDetails.birth_date !== "" && this.convertDate(this.userDetails.birth_date) || this.maxBirthDate,
       gender: this.userDetails.gender,
       phone: this.userDetails.phone,
       address: this.userDetails.address,

@@ -39,20 +39,24 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       confirmDelete: true
     },
     columns: {
-      firstName: {
+      first_name: {
         title: "Họ và tên đệm",
         type: "string"
       },
-      lastName: {
+      last_name: {
         title: "Tên",
         type: "string"
       },
-      birthDate: {
+      birth_date: {
         title: "Ngày sinh",
         type: "string"
       },
       phone: {
         title: "Số điện thoại",
+        type: "string"
+      },
+      jobrole_name: {
+        title: "Chức vụ",
         type: "string"
       }
     },
@@ -67,7 +71,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   loadingStaff = false;
   source: LocalDataSource = new LocalDataSource();
-  staffs: User[] = [];
+  staffs: any[] = [];
 
   constructor(private iconsLibrary: NbIconLibraries,
               private staffService: EmployeeService,
@@ -87,6 +91,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       (success: any) => {
         this.loadingStaffs = false;
         this.staffs = success.content;
+        this.staffs.forEach(employee => {
+            employee.jobrole_name = employee.jobroles[0].name;
+        });
         this.source.load(this.staffs);
       }, (error: any) => {
         this.loadingStaffs = false;

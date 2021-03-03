@@ -48,8 +48,8 @@ export class InterceptorService implements HttpInterceptor {
             if(token && refreshToken){
               this.auth.verifyToken(refreshToken).pipe(takeUntil(this.destroy$)).subscribe(
                 (res: any) => {
-                  localStorage.setItem("token", JSON.stringify(res.accessToken));
-                  localStorage.setItem("refreshToken", JSON.stringify(res.refreshToken));
+                  localStorage.setItem("token", JSON.stringify(res.access_token));
+                  localStorage.setItem("refreshToken", JSON.stringify(res.refresh_token));
                   return next.handle(request);
                 },
                 (err: HttpErrorResponse) => {
@@ -83,7 +83,8 @@ export class InterceptorService implements HttpInterceptor {
       headerSettings[key] = request.headers.getAll(key);
     }
     if (token) {
-      headerSettings['Authorization'] = 'Bearer ' + token;
+      // headerSettings['Authorization'] = 'Bearer ' + token;
+      headerSettings['x-access-token'] = token;
     }
 
     headerSettings['Content-Type'] = 'application/json';

@@ -5,6 +5,7 @@ import { retry, catchError, map } from 'rxjs/operators';
 import { Department } from './department.model';
 import {Subject} from 'rxjs';
 import {Helper} from '../helper';
+import { environment } from '../../../environments/environment';
 
 
 
@@ -17,7 +18,7 @@ export class DepartmentService implements OnDestroy {
    * Web api url
    * @type {string}
    */
-  private departmentApiUrl = 'api/departments';
+  private departmentApiUrl = environment.BASE_URL + 'api/v1/departments';
   private DepartmentList = new Subject<any[]>();
   public DepartmentList$ = this.DepartmentList.asObservable();
   private headers = new HttpHeaders({'Content-Type': 'application/json'});

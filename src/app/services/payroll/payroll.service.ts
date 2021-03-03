@@ -5,6 +5,7 @@ import { retry, catchError, map } from 'rxjs/operators';
 import { Payroll } from './payroll.model';
 import {Subject} from 'rxjs';
 import {Helper} from '../helper';
+import { environment } from '../../../environments/environment';
 
 
 
@@ -17,7 +18,7 @@ export class PayrollService implements OnDestroy {
    * Web api url
    * @type {string}
    */
-  private PayrollApiUrl = 'api/payrolls';
+  private PayrollApiUrl = environment.BASE_URL + 'api/v1/payrolls';
   private PayrollList = new Subject<any[]>();
   public PayrollList$ = this.PayrollList.asObservable();
   private headers = new HttpHeaders({'Content-Type': 'application/json'});

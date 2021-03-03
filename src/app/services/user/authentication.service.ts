@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    private authApiUrl = 'api/v1/users';
+    private authApiUrl = environment.BASE_URL + 'api/v1/users';
 
     constructor(private http: HttpClient, private router: Router) {
         

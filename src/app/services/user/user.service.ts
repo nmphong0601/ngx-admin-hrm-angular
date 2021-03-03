@@ -7,6 +7,7 @@ import {BehaviorSubject, Observable, Subject, throwError} from 'rxjs';
 import { retry, catchError, map, mergeMap } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
 import { root } from 'rxjs/internal/util/root';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ import { root } from 'rxjs/internal/util/root';
 })//https://stackoverflow.com/questions/53571546/angular-7-shared-service-is-not-shared
 export class UserService implements OnDestroy {
 
-  private userApiUrl = 'api/users';
+  private userApiUrl = environment.BASE_URL + 'api/v1/users';
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
 
   // Subjects

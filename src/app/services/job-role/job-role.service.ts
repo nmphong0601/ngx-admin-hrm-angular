@@ -5,6 +5,7 @@ import { retry, catchError, map } from 'rxjs/operators';
 import { JobRole } from './job-role.model';
 import {Subject} from 'rxjs';
 import {Helper} from '../helper';
+import { environment } from '../../../environments/environment';
 
 
 
@@ -17,7 +18,7 @@ export class JobRoleService implements OnDestroy {
    * Web api url
    * @type {string}
    */
-  private JobRoleApiUrl = 'api/jobroles';
+  private JobRoleApiUrl = environment.BASE_URL + 'api/v1/jobroles';
   private JobRoleList = new Subject<any[]>();
   public JobRoleList$ = this.JobRoleList.asObservable();
   private headers = new HttpHeaders({'Content-Type': 'application/json'});

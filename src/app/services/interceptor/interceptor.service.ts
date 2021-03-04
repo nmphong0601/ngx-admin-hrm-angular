@@ -38,27 +38,12 @@ export class InterceptorService implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((response: HttpErrorResponse) => {
+        debugger;
         switch(response.status) {
           case 400:
             return throwError(response.error.message);
           case 401:
-            let token = JSON.parse(localStorage.getItem('token'));
-            let refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
-            if(token && refreshToken){
-              this.auth.verifyToken(refreshToken).pipe(takeUntil(this.destroy$)).subscribe(
-                (res: any) => {
-                  localStorage.setItem("token", JSON.stringify(res.access_token));
-                  localStorage.setItem("refreshToken", JSON.stringify(res.refresh_token));
-                  return next.handle(request);
-                },
-                (err: HttpErrorResponse) => {
-                  this.auth.logout();
-                  // return Observable.throw("Không thể xác thực tài khoản!");
-                }
-              )
-            }
-            else
-              this.auth.logout();
+            this.auth.logout();
             break;
             case 403:
               return throwError("Tài khoản này không có quyền truy cập!");

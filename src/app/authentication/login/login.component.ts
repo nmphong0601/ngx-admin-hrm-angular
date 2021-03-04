@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (formdata.RememberMe === true) {
       localStorage.setItem("userName", formdata.Username);
     }
-    
+
     this.logging = true;
     this.auth.login(formdata)
       .pipe(takeUntil(this.destroy$))
@@ -80,8 +80,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         (res: any) => {
           console.log(res);
           // if Login is successful
-          localStorage.setItem("token", JSON.stringify(res.access_token));
-          localStorage.setItem("refreshToken", JSON.stringify(res.refresh_token));
+          sessionStorage.setItem("token", JSON.stringify(res.access_token));
+          sessionStorage.setItem("refreshToken", JSON.stringify(res.refresh_token));
           this.getOnboardingJourney(res.user);
           this.logging = false;
         },
@@ -106,19 +106,21 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   checkUserStatus(user) {
-    this.authenticateUser(user);
+    this.authenticateUser();
   }
 
-  authenticateUser(user) {
-    setTimeout(() => {
-      let userInfor = JSON.parse(localStorage.getItem('userDetails'));
+  authenticateUser() {
+    let userInfor = JSON.parse(localStorage.getItem('userDetails'));
+    if(this.redirect && this.redirect !== '/'){
+      window.location.href = this.redirect;
+    }
+    else{
       switch(userInfor.permission){
         case 'administrator':
           this.router.navigate(['/app'], {queryParams: {role: 'ADMIN'}});
           break;
       }
-    }, 300);
-
+    }
   }
 
   shuffleKeyPad(keyArray: any[]) {

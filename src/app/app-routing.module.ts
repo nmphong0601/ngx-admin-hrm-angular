@@ -13,7 +13,7 @@ import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
   {
     path: 'app',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./hrm-pages/hrm-pages.module')
       .then(m => m.HrmPagesModule),
   },

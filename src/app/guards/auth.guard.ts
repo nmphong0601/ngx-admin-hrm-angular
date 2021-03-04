@@ -20,13 +20,13 @@ export class AuthGuard implements CanActivate {
         
         switch(userInfor.permission){
           case 'administrator':
-            state.url.includes("/app") || state.url.includes("/auth") ? null : this.router.navigate(['/app'], {queryParams: {role: 'ADMIN'}});
+            state.url.includes("/app") || state.url.includes("/authentication") ? null : this.router.navigate(['/app'], {queryParams: {role: 'ADMIN'}});
             break;
         }
 
         return true;
       }
-      this.router.navigate(['auth'], { queryParams: { returnUrl: url }});
+      this.router.navigate(['authentication'], { queryParams: { returnUrl: url }});
       return false;
   }
 }

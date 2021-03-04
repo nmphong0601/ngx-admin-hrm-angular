@@ -22,6 +22,9 @@ import {
 } from '@nebular/theme';
 import { InterceptorService } from './services/interceptor/interceptor.service';
 import { CurrencyPipe } from '@angular/common';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { NbMomentDateModule } from '@nebular/moment';
+import { NbDateFnsDateModule } from '@nebular/date-fns';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +33,9 @@ import { CurrencyPipe } from '@angular/common';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgxCurrencyModule,
+    NbMomentDateModule,
+    NbDateFnsDateModule.forRoot({ format: 'dd.MM.yyyy' }),
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),

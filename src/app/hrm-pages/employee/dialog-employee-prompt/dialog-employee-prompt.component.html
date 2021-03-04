@@ -51,7 +51,7 @@
           </div>
   
           <div class="form-control-group">
-            <label class="label">Ngày tháng năm sinh:</label>
+            <label class="label">Ngày/Tháng/Năm sinh:</label>
             <input nbInput
               fullWidth
               readonly
@@ -59,17 +59,17 @@
               id="input-birthdate"
               [nbDatepicker]="datepicker"
               [formControl]="employeeForm.controls['birthDate']"
-              placeholder="Ngày tháng năm sinh"
+              placeholder="dd.MM.yyyy"
               fieldSize="large"
               autofocus />
-            <nb-datepicker #datepicker format="yyyy-MM-dd" [max]="maxBirthDate"></nb-datepicker>
+            <nb-datepicker #datepicker format="dd.MM.yyyy" [max]="maxBirthDate"></nb-datepicker>
           </div>
           
           <div class="form-control-group">
             <label class="label">Giới tính:</label>
             <nb-radio-group [formControl]="employeeForm.controls['gender']" name="gender">
-              <nb-radio value="Male">Nam</nb-radio>
-              <nb-radio value="Female">Nữ</nb-radio>
+              <nb-radio value="Nam">Nam</nb-radio>
+              <nb-radio value="Nữ">Nữ</nb-radio>
             </nb-radio-group>
           </div>
         </div>

@@ -21,6 +21,8 @@ import { EmployeeComponent } from './employee/employee.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PayrollComponent } from './payroll/payroll.component';
 import { DialogPayrollPromptComponent } from './payroll/dialog-payroll-prompt/dialog-payroll-prompt.component';
+import { DecimalPipe } from '@angular/common';
+import { NbMomentDateModule } from '@nebular/moment';
 
 @NgModule({
   entryComponents: [DialogPayrollPromptComponent, DialogEmployeePromptComponent],
@@ -50,6 +52,7 @@ import { DialogPayrollPromptComponent } from './payroll/dialog-payroll-prompt/di
     PayrollComponent,
     DialogPayrollPromptComponent
   ],
+  providers: [DecimalPipe]
 })
 export class HrmPagesModule {
 }

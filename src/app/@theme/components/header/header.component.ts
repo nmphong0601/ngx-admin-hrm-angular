@@ -5,6 +5,7 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AuthenticationService } from '../../../services/user/authentication.service';
 
 @Component({
   selector: 'ngx-header',
@@ -16,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
+  employee: any;
 
   themes = [
     {
@@ -38,14 +40,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
+  userMenu = [ { title: 'Thông tin' }, { title: 'Đăng xuất' } ];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
               private userService: UserData,
               private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
@@ -54,9 +58,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.userService.getUsers()
     //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((users: any) => this.user = users.nick);
-    debugger;
     if(JSON.parse(localStorage.getItem("userDetails"))){
       this.user = JSON.parse(localStorage.getItem("userDetails"));
+      this.employee = this.user.employee;
+      this.employee.full_name = `${this.employee.first_name} ${this.employee.last_name}`;
     }
 
     const { xl } = this.breakpointService.getBreakpointsMap();
@@ -73,6 +78,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(themeName => this.currentTheme = themeName);
+
+      this.menuService.onItemClick()
+      .pipe(
+        map(({ item: { title } }) => title),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(title => {
+        switch(title){
+          case 'Thông tin':
+            break;
+          case 'Đăng xuất':
+            this.authenticationService.logout();
+            break;
+        }
+      });
   }
 
   ngOnDestroy() {

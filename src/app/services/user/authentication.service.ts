@@ -24,6 +24,12 @@ export class AuthenticationService {
         const PATH = this.authApiUrl + `/login`;
         return this.http.post<any>(PATH, loginData)
         .pipe(
+          map(response => {
+            response.user.employee = response.user.employees[0];
+            delete response.user.employees;
+
+            return response;
+          })
           //retry(3),
           //catchError(this.util.handleError)
         );

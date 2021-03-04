@@ -10,6 +10,7 @@ import { EmployeeService } from '../../services/employee/employee.service';
 import { NbIconLibraries } from '@nebular/theme';
 import { Employee } from '../../services/employee/employee.model';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-employee',
@@ -77,6 +78,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   constructor(private iconsLibrary: NbIconLibraries,
               private staffService: EmployeeService,
+              private datePipe: DatePipe,
               private dialogService: NbDialogService,
               private toastrService: NbToastrService,
               private route: ActivatedRoute) {
@@ -88,18 +90,28 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
+    debugger;
     this.loadingStaffs = true;
     this.staffService.all().pipe(takeUntil(this.destroy$))
     .subscribe(
-      (success: any) => {
+      (results: any) => {
         this.loadingStaffs = false;
-        this.staffs = success.content;
+        this.staffs = results;
         this.staffs.forEach(employee => {
-            employee.jobrole_name = employee.jobroles[0].name;
+            employee.department = employee.departments[0];
+            employee.jobrole = employee.jobroles[0];
+
+            employee.birth_date = employee.birth_date != undefined ? this.datePipe.transform(employee.birth_date,"dd/MM/yyyy") : null;
+            employee.jobrole_name = employee.jobrole.name;
+
+            delete employee.departments;
+            delete employee.jobroles;
         });
+
         this.source.load(this.staffs);
       }, (error: any) => {
         this.loadingStaffs = false;
+        this.showToast('danger', 'Lỗi lấy danh sách nhân viên!');
       }
     );
   }
@@ -112,16 +124,15 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   btnClickAdd() {
-    debugger;
-    let newUser = new Employee();
+    let newEmployee = new Employee();
 
     this.dialogService.open(DialogEmployeePromptComponent, { 
       context: {
         title: 'Thêm mới nhân viên',
-        userDetails: newUser
+        userDetails: newEmployee
       } 
     }).onClose.subscribe(
-      (user: User) => {
+      (user: Employee) => {
         if(user != null){
           this.loadData();
         }
@@ -130,13 +141,15 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   btnClickEdit(event) {
+    let editEmployee = new Employee(event.data);
+
     this.dialogService.open(DialogEmployeePromptComponent, { 
       context: {
         title: 'Cập nhật nhân viên',
-        userDetails: event.data
+        userDetails: editEmployee
       } 
     }).onClose.subscribe(
-      (user: User) => {
+      (user: Employee) => {
         if(user != null){
           this.loadData();
         }

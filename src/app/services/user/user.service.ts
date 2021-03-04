@@ -33,6 +33,12 @@ export class UserService implements OnDestroy {
    */
   get(id?: number): Observable<any> {
     return this.http.get<any>(this.userApiUrl + `/${id}`).pipe(
+      map(response => {
+        response.employee = response.employees[0];
+        delete response.employees;
+
+        return response;
+      }),
       catchError(Helper.handleError)
     );
   }

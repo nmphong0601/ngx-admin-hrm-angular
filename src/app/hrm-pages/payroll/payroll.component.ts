@@ -70,7 +70,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
 
   loadingpayroll = false;
   source: LocalDataSource = new LocalDataSource();
-  payrolls: Payroll[] = [];
+  payrolls: any[] = [];
 
   constructor(private iconsLibrary: NbIconLibraries,
               private payrollService: PayrollService,
@@ -87,9 +87,14 @@ export class PayrollComponent implements OnInit, OnDestroy {
     this.loadingPayrolls = true;
     this.payrollService.all().pipe(takeUntil(this.destroy$))
     .subscribe(
-      (success: any) => {
+      (results: any) => {
         this.loadingPayrolls = false;
-        this.payrolls = success.content;
+        this.payrolls = results;
+        this.payrolls.forEach(payroll => {
+          payroll.employee = payroll.employees[0];
+
+          delete payroll.employees;
+      });
         this.source.load(this.payrolls);
       }, (error: any) => {
         this.loadingPayrolls = false;

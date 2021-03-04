@@ -7,6 +7,7 @@ import { mergeMap, finalize, takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { Subject } from 'rxjs';
+import { format, compareAsc } from 'date-fns'
 
 @Component({
   selector: 'ngx-dialog-employee-prompt',
@@ -34,14 +35,13 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
               }
 
   createForm() {
-    debugger;
     this.employeeForm = this.fb.group({
       firstName: [this.userDetails.first_name, Validators.required],
       lastName: [this.userDetails.last_name, Validators.required],
-      birthDate: this.userDetails.birth_date !== "" && this.convertDate(this.userDetails.birth_date) || this.maxBirthDate,
-      gender: this.userDetails.gender,
-      phone: this.userDetails.phone,
-      address: this.userDetails.address,
+      birthDate: this.userDetails.birth_date && this.convertDate(this.userDetails.birth_date) || this.maxBirthDate,
+      gender: this.userDetails.gender || 'Nam',
+      phone: this.userDetails.phone || null,
+      address: this.userDetails.address || null,
       email: [this.userDetails.email, Validators.required]
     });
   }
@@ -49,6 +49,7 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
   convertDate(dateString: string) {
     const arrDateString: string[] = dateString.split('/');
     const date = this.dateService.createDate(+arrDateString[2], +arrDateString[1], +arrDateString[0]);
+    // const date = this.dateService.format(new Date(+arrDateString[2],+arrDateString[1],+arrDateString[0]), 'MM\dd\yyyy' );
     return date;
   }
 
@@ -57,13 +58,10 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
   }
 
   add(formData) {
-    debugger;
     this.staffService.all().pipe(takeUntil(this.destroy$),
       mergeMap(
-        (success: any) => {
-          const arr: [] = success.content;
-          const code = Math.max.apply(Math, arr.map(function(o: any) { return o.staffId; })) + 1;
-          formData.staffId = code;
+        (results: any) => {
+          const arr: [] = results;
           formData.birthDate = this.dateService.format(formData.birthDate, "yyyy-MM-dd");
           return this.staffService.add(formData);
         }
@@ -71,7 +69,7 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
       finalize(() =>{})
     )
     .subscribe(
-      (success: any) => {
+      (results: any) => {
         this.submitting = false;
 
         this.showToast('success', "Thêm mới thành công!");

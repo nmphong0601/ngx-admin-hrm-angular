@@ -38,11 +38,11 @@ export class PayrollComponent implements OnInit, OnDestroy {
       confirmDelete: true
     },
     columns: {
-      employee: {
+      employee_name: {
         title: "Nhân viên",
         type: "string"
       },
-      jobRole: {
+      jobrole_name: {
         title: "Chức vụ",
         type: "string"
       },
@@ -63,7 +63,17 @@ export class PayrollComponent implements OnInit, OnDestroy {
       columnTitle: "Thao tác",
       add: false,
       edit: true,
-      delete: true
+      delete: false,
+      custom: [
+        { name: "send", title: '<i class="nb-email" ngIf=""></i>' },
+        { name: "print", title: '<i class="nb-printer" ngIf=""></i>' }
+      ]
+    },
+    rowClassFunction: row => {
+      return "show-all" //Hiện tất cả nút
+    },
+    attr: {
+      class: "table"
     },
     hideSubHeader: true
   };
@@ -92,7 +102,15 @@ export class PayrollComponent implements OnInit, OnDestroy {
         this.payrolls = results;
         this.payrolls.forEach(payroll => {
           payroll.employee = payroll.employees[0];
-
+          payroll.employee_name = `${payroll.employee.first_name} ${payroll.employee.last_name}`;
+          switch(payroll.status){
+            case 0:
+              payroll.status = "Chưa duyệt"
+              break;
+            case 1:
+              payroll.status = "Đã duyệt"
+              break;
+          }
           delete payroll.employees;
       });
         this.source.load(this.payrolls);
@@ -107,7 +125,6 @@ export class PayrollComponent implements OnInit, OnDestroy {
   }
 
   btnClickAdd() {
-    debugger;
     let newPayroll = new Payroll();
 
     this.dialogService.open(DialogPayrollPromptComponent, { 
@@ -125,10 +142,12 @@ export class PayrollComponent implements OnInit, OnDestroy {
   }
 
   btnClickEdit(event) {
+    let editPayroll = new Payroll(event.data);
+
     this.dialogService.open(DialogPayrollPromptComponent, { 
       context: {
         title: 'Cập nhật lương',
-        payrollDetails: event.data
+        payrollDetails: editPayroll
       } 
     }).onClose.subscribe(
       (Payroll: Payroll) => {

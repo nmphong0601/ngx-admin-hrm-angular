@@ -26,7 +26,6 @@ export class DialogOTPPromptComponent implements OnInit, OnDestroy {
   }
 
   submit(code) {
-    debugger;
     this.sendingOTP = true;
     this.authService.verifyResetPassword(this.email, code)
     .pipe(takeUntil(this.detroy$))
@@ -36,10 +35,10 @@ export class DialogOTPPromptComponent implements OnInit, OnDestroy {
         this.ref.close(res);
       },
       (err: HttpErrorResponse) => {
-        this.notifications.show({
-          message: `Không thể xác nhân OTP! ${err}`,
-          status: `error`
-        });
+        this.notifications.show(
+          err, 
+          'Không thể xác nhân OTP!', 
+          {status: `danger`});
       }
     );
     

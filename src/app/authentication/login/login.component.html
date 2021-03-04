@@ -41,29 +41,40 @@
             <label class="label" for="input-Password">Mật khẩu/ Mã OTP:</label>
             <a class="forgot-Password caption-2" routerLink="../forgot-password">Quên mật khẩu?</a>
           </span>
+          <!-- <input nbInput
+                fullWidth
+                [formControl]="loginForm.controls['Password']"
+                name="password"
+                type="password"
+                id="input-Password"
+                placeholder="Mật khẩu"
+                fieldSize="large"
+                [status]="loginForm.controls['Password'].dirty ? (loginForm.controls['Password'].invalid  ? 'danger' : 'success') : ''"
+                [required]="getConfigValue('forms.validation.password.required')"
+                [minlength]="getConfigValue('forms.validation.password.minLength')"
+                [maxlength]="getConfigValue('forms.validation.password.maxLength')"
+                [attr.aria-invalid]="loginForm.controls['Password'].invalid && loginForm.controls['Password'].touched ? true : null"> -->
           <input nbInput
                 fullWidth
                 [formControl]="loginForm.controls['Password']"
                 name="password"
                 type="password"
                 id="input-Password"
-                placeholder="Mật khẩu/ Mã OTP"
+                placeholder="Mật khẩu"
                 fieldSize="large"
                 [status]="loginForm.controls['Password'].dirty ? (loginForm.controls['Password'].invalid  ? 'danger' : 'success') : ''"
                 [required]="getConfigValue('forms.validation.password.required')"
-                [minlength]="getConfigValue('forms.validation.password.minLength')"
-                [maxlength]="getConfigValue('forms.validation.password.maxLength')"
                 [attr.aria-invalid]="loginForm.controls['Password'].invalid && loginForm.controls['Password'].touched ? true : null">
           <ng-container *ngIf="loginForm.controls['Password'].invalid && loginForm.controls['Password'].touched ">
             <p class="caption status-danger" *ngIf="loginForm.controls['Password'].errors?.required">
-              Mật khẩu/ Mã OTP không được để trống!
+              Mật khẩu không được để trống!
             </p>
-            <p class="caption status-danger" *ngIf="loginForm.controls['Password'].errors?.minlength || password.errors?.maxlength">
+            <!-- <p class="caption status-danger" *ngIf="loginForm.controls['Password'].errors?.minlength || password.errors?.maxlength">
               Mật khẩu/ Mã OTP phải có độ dài
               từ {{ getConfigValue('forms.validation.password.minLength') }}
               đến {{ getConfigValue('forms.validation.password.maxLength') }}
               ký tự
-            </p>
+            </p> -->
           </ng-container>
         </div>
       
@@ -71,7 +82,7 @@
                 fullWidth
                 status="primary"
                 size="large"
-                [disabled]="submitted || !loginForm.valid || captchaVerified===''"
+                [disabled]="submitted || !loginForm.valid"
                 [class.btn-pulse]="submitted">
           Đăng nhập
         </button>

@@ -152,7 +152,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
           (err: any) => {
             this.loadingpayroll = false;
             
-            this.showToast('error', `Xóa không thành công! ${err}`);
+            this.showToast('danger', `Xóa không thành công! ${err}`);
             event.confirm.reject();
           }
         );
@@ -163,8 +163,8 @@ export class PayrollComponent implements OnInit, OnDestroy {
 
   showToast(status, message) {
     this.toastrService.show(
-      status || 'Success',
       message || 'Xử lý thành công',
+      status || 'Success',
       {status});
   }
 

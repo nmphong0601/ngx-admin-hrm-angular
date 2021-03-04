@@ -32,7 +32,6 @@ export class InterceptorService implements HttpInterceptor {
   //   return next.handle(req);
   // }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
     if(this.auth.getToken()){
       request = this.addToken(request, this.auth.getToken());
     }

@@ -72,35 +72,35 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
                   success => {
                     
                     setTimeout(() => {
-                      this.notifications.show({
-                        message: `Reset mật khẩu thành công! Mật khẩu mới của bạn là: ${infor.newPassword}`,
-                        status: `info`
-                      });
-                    }, 5000);
+                      this.notifications.show(
+                        `Mật khẩu mới của bạn là: ${infor.newPassword}`, 
+                        'Reset mật khẩu thành công!', 
+                        {status: `info`});
+                    }, 3000);
                     
                     this.route.navigate(['authentication/login']);
                   },
                   (err: HttpErrorResponse) => {
-                    this.notifications.show({
-                      message: `Không thể reset mật khẩu! ${err}`,
-                      status: `error`
-                    });
+                    this.notifications.show(
+                      err, 
+                      'Reset mật khẩu thất bại!', 
+                      {status: `danger`});
                   }
                 )
               }
             },
             (err: any) => {
-              this.notifications.show({
-                message: `Không thể reset mật khẩu! ${err}`,
-                status: `error`
-              });
+              this.notifications.show(
+                err, 
+                'Reset mật khẩu thất bại!', 
+                {status: `danger`});
             })
         },
         (err: HttpErrorResponse) => {
-          this.notifications.show({
-            message: `Gửi yêu cầu thất bại ${err}`,
-            status: `error`
-          });
+          this.notifications.show(
+            err, 
+            'Gửi yêu cầu thất bại!', 
+            {status: `danger`});
         }
       );
     this.loading = false;

@@ -9,6 +9,7 @@ import { EmployeeService } from '../../services/employee/employee.service';
 
 import { NbIconLibraries } from '@nebular/theme';
 import { Employee } from '../../services/employee/employee.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ngx-employee',
@@ -18,6 +19,7 @@ import { Employee } from '../../services/employee/employee.model';
 })
 export class EmployeeComponent implements OnInit, OnDestroy {
 
+  userRole: any;
   loadingStaffs: boolean = false;
   private readonly destroy$ = new Subject();
 
@@ -76,7 +78,8 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   constructor(private iconsLibrary: NbIconLibraries,
               private staffService: EmployeeService,
               private dialogService: NbDialogService,
-              private toastrService: NbToastrService) {
+              private toastrService: NbToastrService,
+              private route: ActivatedRoute) {
                 this.iconsLibrary.registerFontPack('fa', { packClass: 'fa', iconClassPrefix: 'fa' });
                 this.iconsLibrary.registerFontPack('far', { packClass: 'far', iconClassPrefix: 'fa' });
                 this.iconsLibrary.registerFontPack('ion', { iconClassPrefix: 'ion' });
@@ -102,6 +105,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.userRole = +params['role'];
+   });
     this.loadData();
   }
 
@@ -156,7 +162,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
           (err: any) => {
             this.loadingStaff = false;
             
-            this.showToast('error', `Xóa không thành công! ${err}`);
+            this.showToast('danger', `Xóa không thành công! ${err}`);
             event.confirm.reject();
           }
         );
@@ -167,8 +173,8 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   showToast(status, message) {
     this.toastrService.show(
-      status || 'Success',
-      message || 'Xử lý thành công',
+       message || 'Xử lý thành công',
+       status || 'Success',
       {status});
   }
 

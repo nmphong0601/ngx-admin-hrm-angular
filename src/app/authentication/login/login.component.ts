@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../services/employee/employee.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NbToastrService } from '@nebular/theme';
+import { NbGlobalPhysicalPosition, NbToastrService, NbComponentStatus } from '@nebular/theme';
 
 @Component({
   selector: "ngx-login",
@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           // if Login is successful
           localStorage.setItem("token", JSON.stringify(res.access_token));
           localStorage.setItem("refreshToken", JSON.stringify(res.refresh_token));
-          this.getOnboardingJourney();
+          this.getOnboardingJourney(res.user);
           this.logging = false;
         },
         (err: HttpErrorResponse) => {
@@ -94,18 +94,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   // User Authentication
-  getOnboardingJourney() {
-    this.userService.getUser()
-        .pipe(takeUntil(this.destroy$)).subscribe(
-          (res: any) => {
-            this.user = res;
-            this.storeUserDetails(this.user);
-            this.checkUserStatus(this.user);         
-          },
-          (err: HttpErrorResponse) => {
-            console.log(err);
-          }
-        );
+  getOnboardingJourney(user) {
+    this.user = new User(user);
+    this.storeUserDetails(this.user);
+    this.checkUserStatus(this.user);
   }
 
   storeUserDetails(user) {
@@ -120,9 +112,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   authenticateUser(user) {
     setTimeout(() => {
       let userInfor = JSON.parse(localStorage.getItem('userDetails'));
-      switch(userInfor.role){
-        case 'ADMIN':
-          this.router.navigate(['/app', {role: 'ADMIN'}]);
+      switch(userInfor.permission){
+        case 'administrator':
+          this.router.navigate(['/app'], {queryParams: {role: 'ADMIN'}});
           break;
       }
     }, 300);
@@ -142,9 +134,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   errorAlert(messageAlert: any) {
-    this.toastrService.show({
-      status: `error`,
-      message: messageAlert
+    this.toastrService.show(messageAlert, 'Đăng nhập thất bại', {
+      position: NbGlobalPhysicalPosition.TOP_RIGHT,
+      status: 'danger'
     });
   }
 

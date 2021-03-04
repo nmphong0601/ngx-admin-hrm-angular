@@ -22,7 +22,7 @@ export class AuthenticationService {
           pwd: credentials.Password,
         };
         const PATH = this.authApiUrl + `/login`;
-        return this.http.post<any>(PATH, JSON.stringify(loginData))
+        return this.http.post<any>(PATH, loginData)
         .pipe(
           //retry(3),
           //catchError(this.util.handleError)

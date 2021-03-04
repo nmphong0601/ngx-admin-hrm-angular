@@ -21,6 +21,7 @@ import {
   NbWindowModule,
 } from '@nebular/theme';
 import { InterceptorService } from './services/interceptor/interceptor.service';
+import { CurrencyPipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +43,7 @@ import { InterceptorService } from './services/interceptor/interceptor.service';
     ThemeModule.forRoot(),
   ],
   providers: [
+    CurrencyPipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorService,

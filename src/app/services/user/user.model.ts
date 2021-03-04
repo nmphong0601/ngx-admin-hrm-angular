@@ -4,13 +4,15 @@ export class User {
   oid?: number;
   user_name: string;
   password: string;
+  permission: string;
 
   employee: Employee;
 
   constructor(obj?: any) {
-    this.oid = obj && obj.oid || null,
-    this.user_name = obj && obj.user_name || '',
-    this.password = obj && obj.password || '',
+    this.oid = obj && obj.oid || null;
+    this.user_name = obj && obj.user_name || '';
+    this.password = obj && obj.password || '';
+    this.permission = obj && obj.permission || 'user';
 
     this.employee = obj && new Employee(obj.employee) || new Employee();
   }

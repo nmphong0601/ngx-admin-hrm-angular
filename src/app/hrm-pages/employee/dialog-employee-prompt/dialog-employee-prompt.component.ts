@@ -80,7 +80,7 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
       (error: HttpErrorResponse) => {
         this.submitting = false;
 
-        this.showToast('error', `Thêm mới thất bại! ${error}`);
+        this.showToast('danger', `Thêm mới thất bại! ${error}`);
       }
     );
   }
@@ -98,15 +98,15 @@ export class DialogEmployeePromptComponent implements OnInit, OnDestroy {
       (error: HttpErrorResponse) => {
         this.submitting = false;
 
-        this.showToast('error', "Cập nhật thất bại!");
+        this.showToast('danger', "Cập nhật thất bại!");
       }
     );
   }
 
   showToast(status, message) {
     this.toastrService.show(
+      message || 'Xử lý thành công!',
       status || 'Success',
-      message || 'Xử lý thành công',
       {status});
   }
 

@@ -11,7 +11,7 @@
 export const environment = {
   production: false,
   APP_NAME: 'COMPANY',
-  BASE_URL: 'https://hrm-web-api.herokuapp.com',//API HOST
+  BASE_URL: 'https://hrm-web-api.herokuapp.com/',//API HOST
   REQ_SERV: 'localhost:4200',
   ENV_NAME: 'localhost:4200',
   PRIV_ENC_KEY: `-----BEGIN RSA PRIVATE KEY-----

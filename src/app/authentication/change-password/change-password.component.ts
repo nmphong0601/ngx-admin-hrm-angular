@@ -40,34 +40,34 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   onSubmit(formdata) {
     this.loading = true;
 
-    this.notifications.show({
-      message: `Đang cập nhật mật khẩu...`,
-      status: `info`
-    });
+    this.notifications.show(
+      'Logining...', 
+      'Đang cập nhật mật khẩu...', 
+      {status: `info`});
 
     this.userService.changePassword(formdata)
       .pipe(takeUntil(this.detroy$))
       .subscribe(
         (res: any) => {
-          this.notifications.show({
-            message: `Đổi mật khẩu thành công!`,
-            status: `info`
-          });
+          this.notifications.show(
+            'Mật khẩu đã được đổi thành công', 
+            'Đổi mật khẩu thành công!', 
+            {status: `info`});
+
           this.route.navigate(['authentication/login']);
         },
         (err: HttpErrorResponse) => {
-          this.errorAlert("Cập nhật thất bại! " + err);
+          this.errorAlert("Cập nhật thất bại! ", err);
         }
       );
     this.loading = false;
   }
 
-  errorAlert(messageAlert: any) {
-    this.notifications.show({
-      id: `ChangePassError`,
-      message: messageAlert,
-      status: `error`
-    });
+  errorAlert(messageAlert: any, err: any) {
+    this.notifications.show(
+      err,
+      messageAlert,
+      {status: `danger`});
   }
 
   goBack() {

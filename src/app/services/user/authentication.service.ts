@@ -35,12 +35,16 @@ export class AuthenticationService {
         );
       }
 
+    goProfile() {     
+        this.router.navigate(['app','profile']);
+    }
+
     logout() {
         // remove user from local storage to log user out
         sessionStorage.clear();
         localStorage.clear();
         
-        this.router.navigate(['authentication'])
+        this.router.navigate(['authentication']);
     }
 
     forgotPassword(email): Observable<any>{

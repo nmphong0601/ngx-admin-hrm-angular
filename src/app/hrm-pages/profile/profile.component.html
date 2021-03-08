@@ -1,0 +1,139 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card class="inline-form-card">
+      <nb-card-header>Thông tin chung</nb-card-header>
+      <nb-card-body>
+        <form>
+          <div class="form-group row">
+            <label for="inputFirstName" class="label col-sm-3 col-form-label">Họ và tên</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputFirstName" name="inputFirstName" placeholder="Họ và tên đệm" [(ngModel)]="userInfor['employee'].first_name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputLastName" class="label col-sm-3 col-form-label"></label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputLastName" name="inputLastName" placeholder="Tên" [(ngModel)]="userInfor['employee'].last_name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputDOB" class="label col-sm-3 col-form-label">Ngày sinh</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly [nbDatepicker]="datepickerDOB" fullWidth id="inputDOB" name="inputDOB" placeholder="dd.MM.yyyy" [(ngModel)]="userInfor['employee'].birth_date">
+              <nb-datepicker #datepickerDOB format="dd.MM.yyyy" [max]="maxBirthDate"></nb-datepicker>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputLastName" class="label col-sm-3 col-form-label">Địa chỉ</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputAddress" name="inputAddress" placeholder="Địa chỉ" [(ngModel)]="userInfor['employee'].address">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail" class="label col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+              <input type="email" nbInput fullWidth id="inputEmail" name="inputEmail" placeholder="Email" [(ngModel)]="userInfor['employee'].email">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="label col-sm-3 col-form-label">Giới tính</label>
+            <div class="col-sm-9">
+              <nb-radio-group name="gender" [(ngModel)]="userInfor['employee'].gender">
+                <nb-radio value="Nam">Nam</nb-radio>
+                <nb-radio value="Nữ">Nữ</nb-radio>
+              </nb-radio-group>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button type="button" nbButton status="primary">Cập nhật thông tin</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>Bảng lương</nb-card-header>
+      <nb-card-body>
+        <form>
+          <div class="form-group row">
+            <label for="inputSalary" class="label col-sm-3 col-form-label">Lương cơ bản</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly fullWidth id="inputSalary" name="inputSalary" placeholder="Lương cơ bản" [(ngModel)]="payrollInfor.salary">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputBonus" class="label col-sm-3 col-form-label">Thưởng</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly fullWidth id="inputBonus" name="inputBonus" placeholder="Thưởng" [(ngModel)]="payrollInfor.bonus">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPersonalIncomeTax" class="label col-sm-3 col-form-label">Thuế TNCN</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly fullWidth id="inputPersonalIncomeTax" placeholder="Thuế thu nhập cá nhân">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputBHXH" class="label col-sm-3 col-form-label">BHXH</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly fullWidth id="inputBHXH" placeholder="Bảo hiểm xã hội (8%)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputBHYT" class="label col-sm-3 col-form-label">BHYT</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly fullWidth id="inputBHYT" placeholder="Bảo hiểm y tế (1.5%)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputAbsentDays" class="label col-sm-3 col-form-label">Số ngày nghỉ</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly fullWidth id="inputAbsentDays" placeholder="Số ngày nghỉ (không phép)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputTotalSalary" class="label col-sm-3 col-form-label">Tổng lương</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput readonly fullWidth id="inputTotalSalary" placeholder="Lương thực lãnh">
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>Thông tin đăng nhập</nb-card-header>
+      <nb-card-body>
+        <form>
+          <div class="form-group row">
+            <label for="inputUsername" class="label col-sm-3 col-form-label">Tên đăng nhập</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputUsername" name="inputUsername" placeholder="Tên đăng nhập" [(ngModel)]="userInfor.user_name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPasswordOld" class="label col-sm-3 col-form-label">Mật khẩu cũ</label>
+            <div class="col-sm-9">
+              <input type="password" nbInput fullWidth id="inputPasswordOld" placeholder="Mật khẩu cũ" [(ngModel)]="userInfor.old_password">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPasswordNew" class="label col-sm-3 col-form-label">Mật khẩu mới</label>
+            <div class="col-sm-9">
+              <input type="password" nbInput fullWidth id="inputPasswordNew" placeholder="Mật khẩu mói" [(ngModel)]="userInfor.new_password">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button type="button" nbButton status="danger">Đổi mật khẩu</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

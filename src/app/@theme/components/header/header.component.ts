@@ -87,6 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(title => {
         switch(title){
           case 'Thông tin':
+            this.authenticationService.goProfile();
             break;
           case 'Đăng xuất':
             this.authenticationService.logout();

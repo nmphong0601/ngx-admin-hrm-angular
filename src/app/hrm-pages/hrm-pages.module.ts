@@ -3,12 +3,14 @@ import {
   NbAlertModule, 
   NbButtonModule, 
   NbCardModule, 
+  NbCheckboxModule, 
   NbDatepickerModule, 
   NbIconModule, 
   NbInputModule, 
   NbMenuModule, 
   NbRadioModule, 
-  NbSpinnerModule } from '@nebular/theme';
+  NbSpinnerModule, 
+  NbToastrModule} from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
 import { HrmPagesComponent } from './hrm-pages.component';
@@ -23,12 +25,15 @@ import { PayrollComponent } from './payroll/payroll.component';
 import { DialogPayrollPromptComponent } from './payroll/dialog-payroll-prompt/dialog-payroll-prompt.component';
 import { DecimalPipe } from '@angular/common';
 import { NbMomentDateModule } from '@nebular/moment';
+import { ProfileComponent } from './profile/profile.component';
+import { NbDateFnsDateModule } from '@nebular/date-fns';
 
 @NgModule({
   entryComponents: [DialogPayrollPromptComponent, DialogEmployeePromptComponent],
   imports: [
     NbIconModule,
     NbInputModule,
+    NbCheckboxModule,
     NbButtonModule,
     NbCardModule,
     NbRadioModule,
@@ -39,6 +44,9 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbSpinnerModule,
     ThemeModule,
     NbMenuModule,
+    NbToastrModule.forRoot(),
+    NbMomentDateModule,
+    NbDateFnsDateModule.forRoot({ format: 'dd.MM.yyyy' }),
     Ng2SmartTableModule,
     NbDatepickerModule.forRoot(),
     DashboardModule,
@@ -47,6 +55,7 @@ import { NbMomentDateModule } from '@nebular/moment';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [//Nếu Component không có Module riêng thì phải declare trong Module cha cấp gần nhất
     HrmPagesComponent,
+    ProfileComponent,
     EmployeeComponent,
     DialogEmployeePromptComponent,
     PayrollComponent,

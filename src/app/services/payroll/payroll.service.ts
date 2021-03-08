@@ -31,6 +31,18 @@ export class PayrollService implements OnDestroy {
     return this.http.get<any>(PATH).pipe();
   }
 
+  get(id): Observable<any> {
+    const PATH = this.PayrollApiUrl + `/${id}`;
+
+    return this.http.get<any>(PATH).pipe();
+  }
+
+  getByEmployee(employeeId): Observable<any> {
+    const PATH = this.PayrollApiUrl + `/employee/${employeeId}`;
+
+    return this.http.get<any>(PATH).pipe();
+  }
+
   /**
    * Returns an Observable of type Payroll retrieved via http.get
    *

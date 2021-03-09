@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { AuthenticationService } from '../../services/user/authentication.service';
 import { PayrollService } from '../../services/payroll/payroll.service';
+import { Payroll } from '../../services/payroll/payroll.model';
 
 @Component({
   selector: 'ngx-profile',
@@ -51,7 +52,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userInfor['employee'].birth_date = this.userInfor['employee'].birth_date && this.convertDate(this.userInfor['employee'].birth_date) || this.maxBirthDate;
       this.payrollService.getByEmployee(this.userInfor.employee_oid).pipe(takeUntil(this.destroy$)).subscribe(
         results => {
-          this.payrollInfor = results[0];
+          this.payrollInfor = new Payroll(results[0]);
         },
         error => {
           this.toastrService.show(
@@ -80,6 +81,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
   //     this.userRole = +params['role'];
   //  });
     this.loadData();
+  }
+
+  emailChange(value) {
+
+  }
+
+  updateProfile() {
+
+  }
+
+  updatePassword() {
+    
   }
 
   ngOnDestroy() {

@@ -27,6 +27,23 @@ import { DecimalPipe } from '@angular/common';
 import { NbMomentDateModule } from '@nebular/moment';
 import { ProfileComponent } from './profile/profile.component';
 import { NbDateFnsDateModule } from '@nebular/date-fns';
+import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
+
+export const customCurrencyMaskConfig = {
+  align: "left",
+  allowNegative: true,
+  allowZero: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "VNĐ ",
+  suffix: "",
+  thousands: ".",
+  nullable: true,
+  min: null,
+  max: null,
+  inputMode: CurrencyMaskInputMode.FINANCIAL
+};
+
 
 @NgModule({
   entryComponents: [DialogPayrollPromptComponent, DialogEmployeePromptComponent],
@@ -39,6 +56,7 @@ import { NbDateFnsDateModule } from '@nebular/date-fns';
     NbRadioModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     HrmPagesRoutingModule,
     NbAlertModule,
     NbSpinnerModule,
